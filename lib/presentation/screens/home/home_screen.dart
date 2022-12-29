@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:review_app/presentation/screens/home/components/custom_drawer.dart';
 import 'package:review_app/presentation/screens/home/components/single_page.dart';
@@ -71,126 +72,164 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            InkWell(
-              onTap: () {
-                // Navigator.pushReplacementNamed(context, SinglePage.routeName, arguments: SinglePage(des: des, image: image, location: location, name: name, price: price, rating: rating));
-              },
-              child: Stack(
-                children: [
-                  Container(
-                    height: 300,
-                    width: 250,
-                    margin: EdgeInsets.all(15),
-                    padding: EdgeInsets.all(15),
-                    decoration: (BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/hotel1.jpg'),
-                          fit: BoxFit.cover),
-                    )),
-                  ),
-                  Container(
-                    height: 300,
-                    width: 250,
-                    margin: EdgeInsets.all(15),
-                    padding: EdgeInsets.all(15),
-                    decoration: (BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: Colors.black.withOpacity(0.5),
-                    )),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        //name
-                        Text(
-                          'Hotel Name',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 20,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        //des
-                        Text(
-                          'Hotel descriptionHotel description Hotel description Hotel description Hotel description Hotel description Hotel description  ',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            // fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 13,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-
-                        //row  of location price rating
-                        FittedBox(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.location_on_outlined,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 2,
-                                  ),
-                                  Text(
-                                    'Nepal',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                '  \$ 5.0 per Night  ',
-                                style: TextStyle(
-                                  // fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                  fontSize: 13,
+            Container(
+              height: MediaQuery.of(context).size.height * 0.4,
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('all_hotel')
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    return Container(
+                      height: MediaQuery.of(context).size.height * 0.4,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        primary: false,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          var data = snapshot.data!.docs[index];
+                          return InkWell(
+                            onTap: () {
+                              Navigator.pushReplacementNamed(
+                                context,
+                                SinglePage.routeName,
+                                arguments: SinglePage(
+                                  des: data['des'],
+                                  image: data['image'],
+                                  location: data['location'],
+                                  name: data['name'],
+                                  price: data['price'],
+                                  rating: data['rating'],
                                 ),
-                              ),
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.star,
-                                    color: Colors.yellow,
+                              );
+                            },
+                            child: Stack(
+                              children: [
+                                Container(
+                                  height: 300,
+                                  width: 250,
+                                  margin: EdgeInsets.all(15),
+                                  padding: EdgeInsets.all(15),
+                                  decoration: (BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(
+                                        image: NetworkImage(data['image']),
+                                        fit: BoxFit.cover),
+                                  )),
+                                ),
+                                Container(
+                                  height: 300,
+                                  width: 250,
+                                  margin: EdgeInsets.all(15),
+                                  padding: EdgeInsets.all(15),
+                                  decoration: (BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.black.withOpacity(0.5),
+                                  )),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      //name
+                                      Text(
+                                        data['name'],
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      //des
+                                      Text(
+                                        data['des'],
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          // fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+
+                                      //row  of location price rating
+                                      FittedBox(
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.location_on_outlined,
+                                                  color: Colors.white,
+                                                ),
+                                                SizedBox(
+                                                  width: 2,
+                                                ),
+                                                Text(
+                                                  data['location'],
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Text(
+                                              '  \$ ${data['price']}.0  ',
+                                              style: TextStyle(
+                                                // fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                fontSize: 13,
+                                              ),
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.star,
+                                                  color: Colors.yellow,
+                                                ),
+                                                SizedBox(
+                                                  width: 2,
+                                                ),
+                                                Text(
+                                                  '( ${data['rating']} )',
+                                                  style: TextStyle(
+                                                    // fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  SizedBox(
-                                    width: 2,
-                                  ),
-                                  Text(
-                                    '( 5 )',
-                                    style: TextStyle(
-                                      // fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return Text('no data found');
+                },
               ),
-            )
+            ),
           ],
         ),
       ),
