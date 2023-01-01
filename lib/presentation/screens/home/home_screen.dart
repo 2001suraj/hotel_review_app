@@ -7,6 +7,7 @@ import 'package:review_app/data/model/hotel_model.dart';
 import 'package:review_app/presentation/screens/home/components/custom_drawer.dart';
 import 'package:review_app/presentation/screens/home/components/single_page.dart';
 import 'package:review_app/presentation/screens/home/components/slider_container.dart';
+import 'package:review_app/presentation/screens/popular/popular_screen.dart';
 import 'package:review_app/presentation/widgets/custom_row.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -60,11 +61,18 @@ class HomeScreen extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: items.length,
                     itemBuilder: (context, index) {
-                      return Center(
-                        child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(items[index].toString()),
+                      return InkWell(
+                        onTap: () {
+                          Navigator.pushReplacementNamed(
+                              context, PopularScreen.routeName,
+                              arguments: PopularScreen(type: items[index]));
+                        },
+                        child: Center(
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(items[index].toString()),
+                            ),
                           ),
                         ),
                       );
@@ -117,17 +125,17 @@ class _IndividualHotelState extends State<IndividualHotel> {
                       context,
                       SinglePage.routeName,
                       arguments: SinglePage(
-                        lat: info[index].lat,
-                        features: info[index].features,
-                        lng: info[index].lng,
-                        des: info[index].des,
-                        image: info[index].image,
-                        location: info[index].location,
-                        name: info[index].name,
-                        price: info[index].price,
-                        amenities:info[index].amenities
-                        // rating: info[index].rating,
-                      ),
+                          lat: info[index].lat,
+                          features: info[index].features,
+                          lng: info[index].lng,
+                          des: info[index].des,
+                          image: info[index].image,
+                          location: info[index].location,
+                          name: info[index].name,
+                          price: info[index].price,
+                          amenities: info[index].amenities
+                          // rating: info[index].rating,
+                          ),
                     );
                   },
                   child: Stack(
