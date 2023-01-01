@@ -30,11 +30,16 @@ class AppRoute {
           final SinglePage? singlePage = routeSettings.arguments as SinglePage;
           return SinglePage(
               des: singlePage!.des,
+              lat: singlePage.lat,
+              lng: singlePage.lng,
               image: singlePage.image,
               location: singlePage.location,
               name: singlePage.name,
               price: singlePage.price,
-              rating: singlePage.rating);
+              amenities: singlePage.amenities,
+              features: singlePage.features,
+              // rating: singlePage.rating
+              );
         });
 
       default:

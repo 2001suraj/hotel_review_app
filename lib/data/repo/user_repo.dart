@@ -27,4 +27,11 @@ class UserRepo {
     var user = await auth.currentUser;
     return user;
   }
+
+  Future getemail() async {
+    var user = await auth.currentUser!.email;
+    print('name=========>>>>>>>>>$user');
+ 
+    return user;
+  }
 }

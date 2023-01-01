@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:review_app/business_logic/hotel/hotel_bloc.dart';
+import 'package:review_app/data/model/hotel_model.dart';
 import 'package:review_app/presentation/screens/home/components/custom_drawer.dart';
 import 'package:review_app/presentation/screens/home/components/single_page.dart';
 import 'package:review_app/presentation/screens/home/components/slider_container.dart';
 import 'package:review_app/presentation/widgets/custom_row.dart';
-import 'package:review_app/presentation/widgets/dot_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
   static const String routeName = 'HomeScreen';
@@ -72,167 +73,188 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.4,
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('all_hotel')
-                    .snapshots(),
-                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasData) {
-                    return Container(
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        primary: false,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          var data = snapshot.data!.docs[index];
-                          return InkWell(
-                            onTap: () {
-                              Navigator.pushReplacementNamed(
-                                context,
-                                SinglePage.routeName,
-                                arguments: SinglePage(
-                                  des: data['des'],
-                                  image: data['image'],
-                                  location: data['location'],
-                                  name: data['name'],
-                                  price: data['price'],
-                                  rating: data['rating'],
-                                ),
-                              );
-                            },
-                            child: Stack(
-                              children: [
-                                Container(
-                                  height: 300,
-                                  width: 250,
-                                  margin: EdgeInsets.all(15),
-                                  padding: EdgeInsets.all(15),
-                                  decoration: (BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    image: DecorationImage(
-                                        image: NetworkImage(data['image']),
-                                        fit: BoxFit.cover),
-                                  )),
-                                ),
-                                Container(
-                                  height: 300,
-                                  width: 250,
-                                  margin: EdgeInsets.all(15),
-                                  padding: EdgeInsets.all(15),
-                                  decoration: (BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.black.withOpacity(0.5),
-                                  )),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+            IndividualHotel(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class IndividualHotel extends StatefulWidget {
+  const IndividualHotel({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<IndividualHotel> createState() => _IndividualHotelState();
+}
+
+class _IndividualHotelState extends State<IndividualHotel> {
+  @override
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HotelBloc, HotelState>(
+      builder: (context, state) {
+        if (state is HotelloadingState) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is Hotelloadedstate) {
+          List<HotelModel> info = state.hotel;
+
+          return Container(
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: ListView.builder(
+              shrinkWrap: true,
+              primary: false,
+              scrollDirection: Axis.horizontal,
+              itemCount: info.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushReplacementNamed(
+                      context,
+                      SinglePage.routeName,
+                      arguments: SinglePage(
+                        lat: info[index].lat,
+                        features: info[index].features,
+                        lng: info[index].lng,
+                        des: info[index].des,
+                        image: info[index].image,
+                        location: info[index].location,
+                        name: info[index].name,
+                        price: info[index].price,
+                        amenities:info[index].amenities
+                        // rating: info[index].rating,
+                      ),
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        height: 300,
+                        width: 250,
+                        margin: EdgeInsets.all(15),
+                        padding: EdgeInsets.all(15),
+                        decoration: (BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                              image: NetworkImage(info[index].image),
+                              fit: BoxFit.cover),
+                        )),
+                      ),
+                      Container(
+                        height: 300,
+                        width: 250,
+                        margin: EdgeInsets.all(15),
+                        padding: EdgeInsets.all(15),
+                        decoration: (BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.black.withOpacity(0.5),
+                        )),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //name
+                            Text(
+                              info[index].name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 20,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            //des
+                            Text(
+                              info[index].des,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                // fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 13,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+
+                            //row  of location price rating
+                            FittedBox(
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Row(
                                     children: [
-                                      //name
+                                      Icon(
+                                        Icons.location_on_outlined,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(
+                                        width: 2,
+                                      ),
                                       Text(
-                                        data['name'],
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
+                                        info[index].location,
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
-                                          fontSize: 20,
+                                          fontSize: 13,
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 10,
+                                    ],
+                                  ),
+                                  Text(
+                                    '  \$ ${info[index].price}.0 per night  ',
+                                    style: TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.yellow,
                                       ),
-                                      //des
+                                      SizedBox(
+                                        width: 2,
+                                      ),
                                       Text(
-                                        data['des'],
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
+                                        '( ${info[index].rating} )',
                                         style: TextStyle(
                                           // fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontSize: 13,
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-
-                                      //row  of location price rating
-                                      FittedBox(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.location_on_outlined,
-                                                  color: Colors.white,
-                                                ),
-                                                SizedBox(
-                                                  width: 2,
-                                                ),
-                                                Text(
-                                                  data['location'],
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              '  \$ ${data['price']}.0  ',
-                                              style: TextStyle(
-                                                // fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                fontSize: 13,
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Colors.yellow,
-                                                ),
-                                                SizedBox(
-                                                  width: 2,
-                                                ),
-                                                Text(
-                                                  '( ${data['rating']} )',
-                                                  style: TextStyle(
-                                                    // fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                    fontSize: 13,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      )
                                     ],
                                   ),
-                                )
-                              ],
-                            ),
-                          );
-                        },
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    );
-                  }
-                  return Text('no data found');
-                },
-              ),
+                    ],
+                  ),
+                );
+              },
             ),
-          ],
-        ),
-      ),
+          );
+        } else if (state is HotelfailureState) {
+          return Text(state.message);
+        }
+        return Container();
+      },
     );
   }
 }

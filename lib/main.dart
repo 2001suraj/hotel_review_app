@@ -2,8 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/business_logic/auth/auth_bloc.dart';
+import 'package:review_app/business_logic/hotel/hotel_bloc.dart';
 import 'package:review_app/business_logic/logout/logout_bloc.dart';
 import 'package:review_app/business_logic/signup/signup_bloc.dart';
+import 'package:review_app/data/repo/hotel_repo.dart';
 import 'package:review_app/data/repo/user_repo.dart';
 import 'package:review_app/presentation/pages/auth_page/auth_page.dart';
 import 'package:review_app/presentation/pages/onBoardingpage/onboarding_page.dart';
@@ -39,6 +41,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => LogoutBloc(UserRepo()),
+        ),
+        BlocProvider(
+          create: (context) => HotelBloc(HotelRepo())..add(GetHotelEvent()),
         ),
         BlocProvider(
             create: (context) => AuthBloc(UserRepo())..add(AuthAddEvent())),
