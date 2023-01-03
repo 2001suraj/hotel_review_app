@@ -20,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
 
   List<Widget> pages = [
     HomeScreen(),
-    ExploreScreen(),
+    // ExploreScreen(),
     TripScreen(),
     OfferScreen(),
   ];
@@ -42,11 +42,11 @@ class _MainScreenState extends State<MainScreen> {
                 Icons.home,
               ),
               title: 'Home'),
-          TabItem(
-              icon: Icon(
-                Icons.explore,
-              ),
-              title: 'Explore'),
+          // TabItem(
+          //     icon: Icon(
+          //       Icons.explore,
+          //     ),
+          //     title: 'Explore'),
           TabItem(
               icon: Icon(
                 Icons.business_center,
