@@ -1,16 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:review_app/business_logic/hotel/hotel_bloc.dart';
-import 'package:review_app/data/model/hotel_model.dart';
 import 'package:review_app/presentation/screens/home/components/rating_and_review.dart';
 import 'package:review_app/presentation/screens/home/components/room_features.dart';
 import 'package:review_app/presentation/screens/main_screen.dart';
-import 'package:review_app/presentation/widgets/show_snack_bar.dart';
 
 class SinglePage extends StatelessWidget {
   static const String routeName = 'single page';
@@ -66,7 +60,7 @@ class SinglePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                margin: EdgeInsets.all(15),
+                margin: EdgeInsets.only(bottom: 15),
                 height: 350,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
@@ -82,14 +76,7 @@ class SinglePage extends StatelessWidget {
                   fontSize: 30,
                 ),
               ),
-              Text(
-                '\$ $price per night ',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
-                ),
-              ),
+
               //rating and review
               RatingAndReviewRow(name: name),
               SizedBox(
@@ -154,7 +141,7 @@ class SinglePage extends StatelessWidget {
               ),
               //title roome features
               Text(
-                'Room Features',
+                'Features',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 25,

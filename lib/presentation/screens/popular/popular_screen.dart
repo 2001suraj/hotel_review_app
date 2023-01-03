@@ -129,7 +129,7 @@ class PopularScreen extends StatelessWidget {
                             children: [
                               Container(
                                 height: 300,
-                                width: 350,
+                                width: 320,
                                 padding: EdgeInsets.all(15),
                                 margin: EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 15),
@@ -142,7 +142,7 @@ class PopularScreen extends StatelessWidget {
                               ),
                               Container(
                                 height: 300,
-                                width: 350,
+                                width: 320,
                                 margin: EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 15),
                                 padding: EdgeInsets.all(15),
@@ -170,7 +170,7 @@ class PopularScreen extends StatelessWidget {
                                       SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.7,
+                                                0.65,
                                         child: Text(
                                           info[index].name,
                                           maxLines: 1,
@@ -204,7 +204,7 @@ class PopularScreen extends StatelessWidget {
                                                 width: MediaQuery.of(context)
                                                         .size
                                                         .width *
-                                                    0.7,
+                                                    0.65,
                                                 child: Text(
                                                   info[index].location,
                                                   maxLines: 1,

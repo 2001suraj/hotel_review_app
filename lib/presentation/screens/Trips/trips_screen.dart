@@ -7,7 +7,18 @@ class TripScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      backgroundColor: Colors.grey,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset('assets/images/fuse.png'),
+          Text(
+            'Comming Soon !!!',
+            style: TextStyle(color: Colors.white, fontSize: 30),
+          )
+        ],
+      ),
     );
   }
 }

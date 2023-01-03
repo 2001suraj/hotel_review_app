@@ -37,7 +37,8 @@ class HomeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SliderContainer(),
-            CustomRow(text1: 'Explore Hotel', text2: 'View all', tap: () {}),
+            CustomRow(
+                text1: 'Explore Restaurant', text2: 'View all', tap: () {}),
             Container(
               margin: EdgeInsets.all(15),
               height: 50,
@@ -49,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          'All hotel',
+                          'All Restaurant',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, color: Colors.blue),
                         ),
@@ -209,23 +210,20 @@ class _IndividualHotelState extends State<IndividualHotel> {
                                       SizedBox(
                                         width: 2,
                                       ),
-                                      Text(
-                                        info[index].location,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontSize: 13,
+                                      SizedBox(
+                                        width: 120,
+                                        child: Text(
+                                          info[index].location,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 12,
+                                          ),
                                         ),
                                       ),
                                     ],
-                                  ),
-                                  Text(
-                                    '  \$ ${info[index].price}.0 per night  ',
-                                    style: TextStyle(
-                                      // fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                    ),
                                   ),
                                   Row(
                                     children: [
