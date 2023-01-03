@@ -4,7 +4,6 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:review_app/presentation/screens/Offer/offer_screen.dart';
 import 'package:review_app/presentation/screens/Trips/trips_screen.dart';
-import 'package:review_app/presentation/screens/explore/explore_screen.dart';
 import 'package:review_app/presentation/screens/home/home_screen.dart';
 
 class MainScreen extends StatefulWidget {

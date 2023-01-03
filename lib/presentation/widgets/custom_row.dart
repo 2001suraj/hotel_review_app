@@ -20,7 +20,7 @@ class CustomRow extends StatelessWidget {
             text1,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 30,
+              fontSize: 25,
               color: Colors.black,
             ),
           ),
@@ -31,7 +31,7 @@ class CustomRow extends StatelessWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: color,
-                    fontSize: 25),
+                    fontSize: 20),
               )),
         ],
       ),

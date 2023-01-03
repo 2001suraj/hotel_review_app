@@ -51,7 +51,7 @@ class HomeScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           'All Restaurant',
-                          style: TextStyle(
+                          style: TextStyle(fontSize: 12,
                               fontWeight: FontWeight.bold, color: Colors.blue),
                         ),
                       ),
@@ -72,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                           child: Card(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text(items[index].toString()),
+                              child: Text(items[index].toString(),style: TextStyle(fontSize: 12),),
                             ),
                           ),
                         ),
