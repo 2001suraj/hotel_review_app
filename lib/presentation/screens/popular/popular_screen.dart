@@ -119,7 +119,6 @@ class PopularScreen extends StatelessWidget {
                                   image: info[index].image,
                                   location: info[index].location,
                                   name: info[index].name,
-                                  price: info[index].price,
                                   amenities: info[index].amenities
                                   // rating: info[index].rating,
                                   ),
@@ -222,16 +221,16 @@ class PopularScreen extends StatelessWidget {
                                           SizedBox(
                                             height: 12,
                                           ),
-                                          Text(
-                                            '  \$ ${info[index].price}.0 per night  ',
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              // fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                              fontSize: 13,
-                                            ),
-                                          ),
+                                          // Text(
+                                          //   '  \$ ${info[index].price}.0 per night  ',
+                                          //   maxLines: 1,
+                                          //   overflow: TextOverflow.ellipsis,
+                                          //   style: TextStyle(
+                                          //     // fontWeight: FontWeight.bold,
+                                          //     color: Colors.black,
+                                          //     fontSize: 13,
+                                          //   ),
+                                          // ),
                                           SizedBox(
                                             height: 12,
                                           ),

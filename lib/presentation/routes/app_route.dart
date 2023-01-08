@@ -42,7 +42,6 @@ class AppRoute {
             image: singlePage.image,
             location: singlePage.location,
             name: singlePage.name,
-            price: singlePage.price,
             amenities: singlePage.amenities,
             features: singlePage.features,
             // rating: singlePage.rating

@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/business_logic/login/login_bloc.dart';
 import 'package:review_app/business_logic/signup/signup_bloc.dart';
 import 'package:review_app/data/local_storage/share_preference.dart';
+import 'package:review_app/data/repo/cloud_storage.dart';
 import 'package:review_app/presentation/pages/login_page/login_page.dart';
 import 'package:review_app/presentation/screens/main_screen.dart';
 import 'package:review_app/presentation/screens/home/home_screen.dart';
@@ -18,6 +20,7 @@ class SignupPage extends StatelessWidget {
   SignupPage({Key? key}) : super(key: key);
 
   TextEditingController email = TextEditingController();
+  TextEditingController name = TextEditingController();
   TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -38,10 +41,16 @@ class SignupPage extends StatelessWidget {
                       fontSize: 50,
                       fontWeight: FontWeight.bold),
                 ),
-                  Spacer(),
+                Spacer(),
                 CircleAvatar(
                   radius: 80,
                   backgroundImage: AssetImage('assets/images/login.png'),
+                ),
+                Spacer(),
+                NormalTextField(
+                  controller: name,
+                  text: 'Username',
+                  iconData: Icons.person,
                 ),
                 Spacer(),
                 NormalTextField(
@@ -63,7 +72,8 @@ class SignupPage extends StatelessWidget {
                   ),
                 ),
                 Spacer(),
-                BlocListener<SignupBloc, SignupState>(listener: (context, state) {
+                BlocListener<SignupBloc, SignupState>(
+                    listener: (context, state) {
                   if (state is SignupSuccessState) {
                     Navigator.pushReplacementNamed(
                         context, MainScreen.routeName);
@@ -97,21 +107,16 @@ class SignupPage extends StatelessWidget {
                   child: CustomBtn(
                     color: Colors.cyan,
                     textcolor: Colors.white,
-                    tap: () {
-                      if (email.text.isNotEmpty && password.text.isNotEmpty) {
+                    tap: () async {
+                      if (email.text.isNotEmpty &&
+                          password.text.isNotEmpty &&
+                          name.text.isNotEmpty) {
                         context.read<SignupBloc>().add(SignupAddEvent(
                             email: email.text, password: password.text));
+                        CloudStorages().userinfo_update(
+                            email: email.text, name: name.text);
 
-                          LocalStorage().writedata(text: email.text);
-                        //   CloudStorages().userinfo(
-                        //       name: name.text,
-                        //       email: email.text,
-                        //       about: '',
-                        //       key: [
-                        //         for (int i = 0; i <= name.text.length; i++)
-                        //           name.text.substring(0, i).toLowerCase(),
-                        //       ],
-                        //       following: []);
+                        LocalStorage().writedata(text: email.text);
                       } else {
                         showsnackBar(
                             context: context,

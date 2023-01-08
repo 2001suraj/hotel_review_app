@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/business_logic/logout/logout_bloc.dart';
@@ -66,13 +67,44 @@ class ProfileScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       //name
-                      Text(
-                        'Ram',
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.cyan),
+                      Container(
+                        margin: EdgeInsets.all(20),
+                        height: 30,
+                        width: MediaQuery.of(context).size.width / 5,
+                        child: FutureBuilder(
+                            future: LocalStorage().readdata(),
+                            builder: (context, snapshot) {
+                              return StreamBuilder(
+                                  stream: FirebaseFirestore.instance
+                                      .collection('user')
+                                      .snapshots(),
+                                  builder: (context,
+                                      AsyncSnapshot<QuerySnapshot> snap) {
+                                    return SizedBox(
+                                      height: 40,
+                                      child: ListView.builder(
+                                          itemCount: snap.data!.docs.length,
+                                          itemBuilder: (context, index) {
+                                            if (snapshot.data.toString() ==
+                                                snap.data!.docs[index]
+                                                    ['email']) {
+                                              return Text(
+                                                snap.data!.docs[index]['name']
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.cyan),
+                                              );
+                                            } else {
+                                              return Text('data');
+                                            }
+                                          }),
+                                    );
+                                  });
+                            }),
                       ),
+
                       //edit box
                       Padding(
                         padding: const EdgeInsets.all(28.0),

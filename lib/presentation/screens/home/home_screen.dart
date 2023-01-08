@@ -133,7 +133,7 @@ class _IndividualHotelState extends State<IndividualHotel> {
                           image: info[index].image,
                           location: info[index].location,
                           name: info[index].name,
-                          price: info[index].price,
+                      
                           amenities: info[index].amenities
                           // rating: info[index].rating,
                           ),

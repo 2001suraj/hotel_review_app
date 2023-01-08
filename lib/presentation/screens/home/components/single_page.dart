@@ -16,7 +16,6 @@ class SinglePage extends StatelessWidget {
     required this.name,
     required this.lat,
     required this.lng,
-    required this.price,
     required this.features,
     required this.amenities,
     // required this.rating
@@ -24,7 +23,6 @@ class SinglePage extends StatelessWidget {
   String name;
   String image;
   String des;
-  String price;
   // double rating;
   String location;
   String lat;
