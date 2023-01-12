@@ -2,6 +2,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:review_app/data/model/hotel_model.dart';
+import 'package:review_app/presentation/screens/home/components/single_page.dart';
 
 class SearchScreen extends StatefulWidget {
   static const String routeName = 'search recipe screen';
@@ -59,11 +61,162 @@ class _SearchUserScreenState extends State<SearchScreen> {
                           .snapshots(),
                       builder:
                           (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                        return ListView.builder(
+                        return Container(
+                          height: MediaQuery.of(context).size.height * 0.4,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            primary: false,
+                            scrollDirection: Axis.vertical,
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              var info = snapshot.data!.docs[index];
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    SinglePage.routeName,
+                                    arguments: SinglePage(
+                                      lat: info['lat'],
+                                      features: snapshot.data!.docs[index]
+                                          ['features'],
+                                      des: info['des'],
+                                      image: info['image'],
+                                      location: info['location'],
+                                      name: info['name'],
+                                      amenities: snapshot.data!.docs[index]
+                                          ['amenities'],
+                                      lng: info['lng'],
+                                      // rating: info[index].rating,
+                                    ),
+                                  );
+                                },
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      height: 300,
+                                      width: 250,
+                                      margin: EdgeInsets.all(15),
+                                      padding: EdgeInsets.all(15),
+                                      decoration: (BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        image: DecorationImage(
+                                            image: NetworkImage(info['image']),
+                                            fit: BoxFit.cover),
+                                      )),
+                                    ),
+                                    Container(
+                                      height: 300,
+                                      width: 250,
+                                      margin: EdgeInsets.all(15),
+                                      padding: EdgeInsets.all(15),
+                                      decoration: (BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        color: Colors.black.withOpacity(0.5),
+                                      )),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          //name
+                                          Text(
+                                            info['name'],
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          //des
+                                          Text(
+                                            info['des'],
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              // fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 13,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+
+                                          // row  of location price rating
+                                          FittedBox(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons
+                                                          .location_on_outlined,
+                                                      color: Colors.white,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 2,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 120,
+                                                      child: Text(
+                                                        info['location'],
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white,
+                                                          fontSize: 12,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.star,
+                                                      color: Colors.yellow,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 2,
+                                                    ),
+                                                    Text(
+                                                      '( ${info['rating']} )',
+                                                      style: TextStyle(
+                                                        // fontWeight: FontWeight.bold,
+                                                        color: Colors.white,
+                                                        fontSize: 13,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                        ListView.builder(
                             itemCount: snapshot.data!.docs.length,
                             itemBuilder: (context, index) {
                               return Text(
-                               snapshot.data!.docs[index]['name'].toString(),
+                                snapshot.data!.docs[index]['name'].toString(),
                                 style: TextStyle(color: Colors.white),
                               );
                             });
@@ -100,144 +253,6 @@ class _SearchUserScreenState extends State<SearchScreen> {
                     ],
                   )),
                 ),
-              )
-
-        // SingleChildScrollView(
-        //   child: Container(
-        //     padding: EdgeInsets.all(20),
-        //     child: Column(
-        //       mainAxisAlignment: MainAxisAlignment.start,
-        //       crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: [
-        //         Text(
-        //           'Suggestion',
-        //           style: TextStyle(
-        //             fontWeight: FontWeight.bold,
-        //             fontSize: 24,
-        //           ),
-        //         ),
-        //         Padding(
-        //           padding: const EdgeInsets.only(top: 10.0, right: 10),
-        //           child: SizedBox(
-        //             height: MediaQuery.of(context).size.height * 0.7,
-        //             width: MediaQuery.of(context).size.width * 0.8,
-        //             child: FutureBuilder(
-        //                 future: LocalStorage().readdata(),
-        //                 builder: (context1, snap) {
-        //                   return StreamBuilder(
-        //                     stream: (nam != '' && nam != null)
-        //                         ? FirebaseFirestore.instance
-        //                             .collection('user')
-        //                             .where('key', arrayContains: nam)
-        //                             .snapshots()
-        //                         : FirebaseFirestore.instance
-        //                             .collection('user')
-        //                             .snapshots(),
-        //                     builder:
-        //                         (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        //                       if (snapshot.hasData) {
-        //                         return ListView.builder(
-        //                             itemCount: snapshot.data!.docs.length,
-        //                             itemBuilder: (context, index) {
-        //                               var data = snapshot.data!.docs[index];
-        //                               return InkWell(
-        //                                 onTap: () {
-        //                                   Navigator.pushNamed(
-        //                                     context,
-        //                                     OtherUserProfilePage.routeName,
-        //                                     arguments: OtherUserProfilePage(
-        //                                       followers: ['followers'],
-        //                                       following: data['following'],
-        //                                       about: data['about'],
-        //                                       email: data['email'],
-        //                                       image: data['image'],
-        //                                       name: data['name'],
-        //                                     ),
-        //                                   );
-        //                                 },
-        //                                 child: Padding(
-        //                                   padding: const EdgeInsets.symmetric(
-        //                                       vertical: 8.0),
-        //                                   child: Row(
-        //                                     mainAxisAlignment:
-        //                                         MainAxisAlignment.spaceBetween,
-        //                                     children: [
-        //                                       Row(
-        //                                         children: [
-        //                                           snapshot.data!.docs[index]
-        //                                                       ['image'] ==
-        //                                                   'null'
-        //                                               ? Padding(
-        //                                                   padding:
-        //                                                       const EdgeInsets
-        //                                                           .all(8.0),
-        //                                                   child: CircleAvatar(
-        //                                                     radius: 30,
-        //                                                     backgroundImage:
-        //                                                         AssetImage(
-        //                                                             'assets/images/user1.png'),
-        //                                                   ),
-        //                                                 )
-        //                                               : Padding(
-        //                                                   padding:
-        //                                                       const EdgeInsets
-        //                                                           .all(8.0),
-        //                                                   child: CircleAvatar(
-        //                                                     radius: 30,
-        //                                                     backgroundImage:
-        //                                                         NetworkImage(
-        //                                                       snapshot.data!
-        //                                                               .docs[index]
-        //                                                           ['image'],
-        //                                                     ),
-        //                                                   ),
-        //                                                 ),
-        //                                           Padding(
-        //                                             padding:
-        //                                                 const EdgeInsets.all(8.0),
-        //                                             child: Column(
-        //                                               mainAxisAlignment:
-        //                                                   MainAxisAlignment.start,
-        //                                               crossAxisAlignment:
-        //                                                   CrossAxisAlignment
-        //                                                       .start,
-        //                                               children: [
-        //                                                 Text(
-        //                                                   snapshot.data!
-        //                                                           .docs[index]
-        //                                                       ['name'],
-        //                                                 ),
-        //                                                 Text(
-        //                                                   snapshot.data!
-        //                                                           .docs[index]
-        //                                                       ['email'],
-        //                                                 ),
-        //                                               ],
-        //                                             ),
-        //                                           )
-        //                                         ],
-        //                                       ),
-        //                                       Icon(
-        //                                         Icons.arrow_forward_ios_outlined,
-        //                                         color: Colors.white,
-        //                                       )
-        //                                     ],
-        //                                   ),
-        //                                 ),
-        //                               );
-        //                             });
-        //                       } else {
-        //                         return FittedBox(child: Text('no data founnd'));
-        //                       }
-        //                     },
-        //                   );
-        //                 }),
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
-        );
+              ));
   }
 }

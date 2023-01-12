@@ -149,7 +149,7 @@ class SinglePage extends StatelessWidget {
                 height: 15,
               ),
               //roome fearures
-              RoomFeatures(features: features),
+              RoomFeatures(features: features ),
               SizedBox(
                 height: 15,
               ),
