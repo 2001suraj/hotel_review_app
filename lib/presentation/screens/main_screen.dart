@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:review_app/presentation/screens/Offer/offer_screen.dart';
 import 'package:review_app/presentation/screens/Trips/trips_screen.dart';
 import 'package:review_app/presentation/screens/home/home_screen.dart';
+import 'package:review_app/presentation/screens/search/search_screen.dart';
 
 class MainScreen extends StatefulWidget {
   static const String routeName = 'main screen';
@@ -20,6 +21,7 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> pages = [
     HomeScreen(),
     // ExploreScreen(),
+    SearchScreen(),
     TripScreen(),
     OfferScreen(),
   ];
@@ -46,6 +48,11 @@ class _MainScreenState extends State<MainScreen> {
           //       Icons.explore,
           //     ),
           //     title: 'Explore'),
+          TabItem(
+              icon: Icon(
+                Icons.search,
+              ),
+              title: 'Search'),
           TabItem(
               icon: Icon(
                 Icons.business_center,

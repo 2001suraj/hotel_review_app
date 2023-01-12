@@ -9,13 +9,80 @@ class HotelRepo {
     try {
       final response =
           await FirebaseFirestore.instance.collection('all_hotel').get();
+   
       response.docs.forEach((element) {
         return hotel.add(HotelModel.fromMap(element.data()));
       });
       return hotel;
     } on FirebaseException catch (e) {
       if (kDebugMode) {
-        print('failed with error:' '${e.code}' + ':' +  '${e.message}');
+        print('failed with error:' '${e.code}' + ':' + '${e.message}');
+      }
+      return hotel;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+  Future<List<HotelModel>> popular() async {
+    List<HotelModel> hotel = [];
+    try {
+      final response =
+          // await FirebaseFirestore.instance.collection('all_hotel').get();
+          await FirebaseFirestore.instance
+              .collection('all_hotel')
+              .where('category', isEqualTo: 'popular')
+              .get();
+      response.docs.forEach((element) {
+        return hotel.add(HotelModel.fromMap(element.data()));
+      });
+      return hotel;
+    } on FirebaseException catch (e) {
+      if (kDebugMode) {
+        print('failed with error:' '${e.code}' + ':' + '${e.message}');
+      }
+      return hotel;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+  Future<List<HotelModel>> nearyou() async {
+    List<HotelModel> hotel = [];
+    try {
+      final response =
+          // await FirebaseFirestore.instance.collection('all_hotel').get();
+          await FirebaseFirestore.instance
+              .collection('all_hotel')
+              .where('category', isEqualTo: 'nearyou')
+              .get();
+      response.docs.forEach((element) {
+        return hotel.add(HotelModel.fromMap(element.data()));
+      });
+      return hotel;
+    } on FirebaseException catch (e) {
+      if (kDebugMode) {
+        print('failed with error:' '${e.code}' + ':' + '${e.message}');
+      }
+      return hotel;
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+  Future<List<HotelModel>> advanture() async {
+    List<HotelModel> hotel = [];
+    try {
+      final response =
+          // await FirebaseFirestore.instance.collection('all_hotel').get();
+          await FirebaseFirestore.instance
+              .collection('all_hotel')
+              .where('category', isEqualTo: 'advanture')
+              .get();
+      response.docs.forEach((element) {
+        return hotel.add(HotelModel.fromMap(element.data()));
+      });
+      return hotel;
+    } on FirebaseException catch (e) {
+      if (kDebugMode) {
+        print('failed with error:' '${e.code}' + ':' + '${e.message}');
       }
       return hotel;
     } catch (e) {

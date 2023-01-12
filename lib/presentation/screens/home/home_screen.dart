@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:review_app/business_logic/hotel/hotel_bloc.dart';
 import 'package:review_app/data/model/hotel_model.dart';
+import 'package:review_app/presentation/screens/Advanture/advanture_screen.dart';
+import 'package:review_app/presentation/screens/Near_you/near_you_screen.dart';
 import 'package:review_app/presentation/screens/home/components/custom_drawer.dart';
 import 'package:review_app/presentation/screens/home/components/single_page.dart';
 import 'package:review_app/presentation/screens/home/components/slider_container.dart';
@@ -51,8 +53,10 @@ class HomeScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           'All Restaurant',
-                          style: TextStyle(fontSize: 12,
-                              fontWeight: FontWeight.bold, color: Colors.blue),
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue),
                         ),
                       ),
                     ),
@@ -63,16 +67,40 @@ class HomeScreen extends StatelessWidget {
                     itemCount: items.length,
                     itemBuilder: (context, index) {
                       return InkWell(
-                        onTap: () {
-                          Navigator.pushReplacementNamed(
+                        onTap: () {       
+                           if(items[index].contains('Popular')){
+                             Navigator.pushReplacementNamed(
                               context, PopularScreen.routeName,
                               arguments: PopularScreen(type: items[index]));
+                           context.read<HotelBloc>()..add(GetPopularHotelEvent(name: items[index]));     
+
+
+                           }      
+                           if(items[index].contains('Near You')){
+                             Navigator.pushReplacementNamed(
+                              context, NearYouScreen.routeName,
+                              arguments: NearYouScreen(type: 'Near You'));
+                               context.read<HotelBloc>()..add(GetNearyouHotelEvent(name: 'Near You'));
+
+                           }      
+                           if(items[index].contains('Advanture')){
+                             Navigator.pushReplacementNamed(
+                              context, AdvantureScreen.routeName,
+                              arguments: AdvantureScreen(type: 'Advanture'));
+                               context.read<HotelBloc>()..add(GetAdvantureHotelEvent(name: 'Advanture'));
+
+                           }      
+                         
+                          
                         },
                         child: Center(
                           child: Card(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text(items[index].toString(),style: TextStyle(fontSize: 12),),
+                              child: Text(
+                                items[index].toString(),
+                                style: TextStyle(fontSize: 12),
+                              ),
                             ),
                           ),
                         ),
@@ -105,7 +133,9 @@ class _IndividualHotelState extends State<IndividualHotel> {
   Widget build(BuildContext context) {
     return BlocBuilder<HotelBloc, HotelState>(
       builder: (context, state) {
-        if (state is HotelloadingState) {
+        if (state is HotelInitial) {
+          context.read<HotelBloc>()..add(GetHotelEvent());
+        } else if (state is HotelloadingState) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -133,7 +163,6 @@ class _IndividualHotelState extends State<IndividualHotel> {
                           image: info[index].image,
                           location: info[index].location,
                           name: info[index].name,
-                      
                           amenities: info[index].amenities
                           // rating: info[index].rating,
                           ),

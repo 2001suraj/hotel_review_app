@@ -20,6 +20,31 @@ class HotelBloc extends Bloc<HotelEvent, HotelState> {
         } catch (e) {
           emit(HotelfailureState(message: e.toString()));
         }
+      } else if (event is GetPopularHotelEvent) {
+        emit(HotelloadingState());
+        try {
+          final data = await repo.popular();
+          emit(Hotelloadedstate(hotel: data));
+        } catch (e) {
+          emit(HotelfailureState(message: e.toString()));
+        }
+      } else if (event is GetNearyouHotelEvent) {
+        emit(HotelloadingState());
+        try {
+          final data = await repo.nearyou();
+          emit(Hotelloadedstate(hotel: data));
+        } catch (e) {
+          emit(HotelfailureState(message: e.toString()));
+        }
+      
+      } else if (event is GetAdvantureHotelEvent) {
+        emit(HotelloadingState());
+        try {
+          final data = await repo.advanture();
+          emit(Hotelloadedstate(hotel: data));
+        } catch (e) {
+          emit(HotelfailureState(message: e.toString()));
+        }
       }
     });
   }

@@ -8,9 +8,9 @@ import 'package:review_app/presentation/screens/home/components/single_page.dart
 import 'package:review_app/presentation/screens/main_screen.dart';
 import 'package:review_app/presentation/screens/search/search_screen.dart';
 
-class PopularScreen extends StatelessWidget {
-  static const String routeName = 'PopulaScreen';
-  PopularScreen({super.key, required this.type});
+class AdvantureScreen extends StatelessWidget {
+  static const String routeName = 'AdvantureScreen';
+  AdvantureScreen({super.key, required this.type});
   String type;
 
   @override
@@ -22,7 +22,7 @@ class PopularScreen extends StatelessWidget {
         child: BlocBuilder<HotelBloc, HotelState>(
           builder: (context, state) {
             if (state is HotelInitial) {
-              context.read<HotelBloc>()..add(GetPopularHotelEvent(name: type));
+              context.read<HotelBloc>()..add(GetAdvantureHotelEvent(name: type));
             } else if (state is HotelloadingState) {
               return Center(
                 child: CircularProgressIndicator(),
@@ -53,7 +53,7 @@ class PopularScreen extends StatelessWidget {
                     margin: EdgeInsets.all(20),
                     width: MediaQuery.of(context).size.width,
                     child: TextField(
-                      onTap: () {
+                           onTap: () {
                         Navigator.pushNamed(context, SearchScreen.routeName);
                       },
                       decoration: InputDecoration(
@@ -94,7 +94,8 @@ class PopularScreen extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            context.read<HotelBloc>()..add(GetHotelEvent());
+                            context.read<HotelBloc>()
+                              ..add(GetHotelEvent());
                           },
                           child: Text(
                             'View All',

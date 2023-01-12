@@ -38,6 +38,7 @@ class RatingAndReviewRow extends StatelessWidget {
                 child: ListView.builder(
                   shrinkWrap: true,
                   primary: false,
+                  physics: NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   itemCount: info.length,
                   itemBuilder: (context, index) {
@@ -52,6 +53,7 @@ class RatingAndReviewRow extends StatelessWidget {
                           InkWell(
                             onTap: () {
                               showModalBottomSheet(
+                                isScrollControlled: true,
                                   context: context,
                                   builder: (context) {
                                     return Expanded(
@@ -174,6 +176,7 @@ class RatingAndReviewRow extends StatelessWidget {
                                               child: ListView.builder(
                                                 shrinkWrap: true,
                                                 primary: false,
+                                  
                                                 itemCount:
                                                     info[index].review.length,
                                                 itemBuilder: (context, index1) {
@@ -252,7 +255,7 @@ class RatingAndReviewRow extends StatelessWidget {
                                                                 child: Row(
                                                                   children: const [
                                                                     Icon(Icons
-                                                                        .report_gmailerrorred),
+                                                                        .delete),
                                                                     SizedBox(
                                                                       width: 10,
                                                                     ),

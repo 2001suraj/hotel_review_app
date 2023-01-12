@@ -8,9 +8,9 @@ import 'package:review_app/presentation/screens/home/components/single_page.dart
 import 'package:review_app/presentation/screens/main_screen.dart';
 import 'package:review_app/presentation/screens/search/search_screen.dart';
 
-class PopularScreen extends StatelessWidget {
-  static const String routeName = 'PopulaScreen';
-  PopularScreen({super.key, required this.type});
+class NearYouScreen extends StatelessWidget {
+  static const String routeName = 'NearyouScreen';
+  NearYouScreen({super.key, required this.type});
   String type;
 
   @override
@@ -22,7 +22,7 @@ class PopularScreen extends StatelessWidget {
         child: BlocBuilder<HotelBloc, HotelState>(
           builder: (context, state) {
             if (state is HotelInitial) {
-              context.read<HotelBloc>()..add(GetPopularHotelEvent(name: type));
+              context.read<HotelBloc>()..add(GetNearyouHotelEvent(name: type));
             } else if (state is HotelloadingState) {
               return Center(
                 child: CircularProgressIndicator(),
@@ -56,6 +56,7 @@ class PopularScreen extends StatelessWidget {
                       onTap: () {
                         Navigator.pushNamed(context, SearchScreen.routeName);
                       },
+                      readOnly: true,
                       decoration: InputDecoration(
                         hintText: 'Search',
                         prefixIcon: Icon(Icons.search),
@@ -65,16 +66,16 @@ class PopularScreen extends StatelessWidget {
                         fillColor: Colors.blue.withOpacity(0.2),
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
-                            borderSide:
-                                BorderSide(color: Colors.blueAccent, width: 2)),
+                            borderSide: BorderSide(
+                                color: Colors.blueAccent, width: 2)),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
-                            borderSide:
-                                BorderSide(color: Colors.blueAccent, width: 2)),
+                            borderSide: BorderSide(
+                                color: Colors.blueAccent, width: 2)),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
-                            borderSide:
-                                BorderSide(color: Colors.blueAccent, width: 2)),
+                            borderSide: BorderSide(
+                                color: Colors.blueAccent, width: 2)),
                       ),
                     ),
                   ),

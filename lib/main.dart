@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
           create: (context) => LogoutBloc(UserRepo()),
         ),
         BlocProvider(
-          create: (context) => HotelBloc(HotelRepo())..add(GetHotelEvent()),
+          create: (context) => HotelBloc(HotelRepo()),
         ),
         BlocProvider(
             create: (context) => AuthBloc(UserRepo())..add(AuthAddEvent())),
